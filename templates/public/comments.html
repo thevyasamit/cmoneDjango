@@ -9,6 +9,7 @@
             <div class="vote"
                  data-what-type="submission"
                  data-what-id="{{ submission.id }}">
+
                 <div><i class="fa fa-chevron-up {% if  sub_vote == 1 %} upvoted {% endif %}"
                         title="upvote" onclick="vote(this)"></i>
                 </div>
@@ -24,10 +25,22 @@
                 <br>
                 <h6 class="thread-info">submitted {{ submission.timestamp|naturaltime }} by <a
                         href="/user/{{ submission.author_name }}">{{ submission.author_name }}</a></h6>
+                        <input type="submit" value="edit">
+                        {% comment %} <form id ="editForm" 
+                            parentType="submission"
+                            parentId="{{ submission.id }}"
+                            class="form-horizontal" 
+                            action="/post/comment/edit" >
+                        <fieldset>
+                            <input type="text" id = "edit" name="inputField">
+                            <input type="submit" value="edit">
+                            <span id="postResponse" class="text-success" style="display: none"></span>
+                        </fieldset>
+                        </form> {% endcomment %}
                 {{ submission.text_html|safe }}
-                <ul class="buttons">
                     <li><a href="{{ submission.comments_url }}">{{ submission.comment_count }} comments</a></li>
                 </ul>
+                <br>
             </div>
         </div>
 
@@ -38,6 +51,7 @@
               action="/post/comment/"
               data-parent-type="submission"
               data-parent-id="{{ submission.id }}">
+
             <fieldset>
 
                 <div class="form-group comment-group">
@@ -55,7 +69,12 @@
                 </div>
             </fieldset>
         </form>
-
+       
         {% include '__items/comment.html' %}
 
 {% endblock %}
+
+
+{% comment %} 
+document.getElementById('commentForm').action = "/post/comment/";
+document.getElementById('commentForm').submit(); {% endcomment %}

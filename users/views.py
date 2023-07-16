@@ -8,13 +8,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from reddit.forms import UserForm, ProfileForm
 from reddit.utils.helpers import post_only
 from users.models import RedditUser
+from reddit.models import Submission
+from reddit.models import Comment
 
 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = RedditUser.objects.get(user=user)
-
-    return render(request, 'public/profile.html', {'profile': profile})
+    submissions = Submission.objects.filter(author=profile)
+    comments = Comment.objects.filter(author=profile)
+    return render(request, 'public/profile.html', {'profile': profile,
+                                                   'submissions': submissions,
+                                                   'comments': comments})
 
 
 @login_required
@@ -43,7 +48,7 @@ def user_login(request):
     supplied in the POST request.
     """
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         messages.warning(request, "You are already logged in.")
         return render(request, 'public/login.html')
 
@@ -59,7 +64,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                redirect_url = request.POST.get('next') or 'frontpage'
+                redirect_url = 'frontpage' #request.POST.get('next') or 
                 return redirect(redirect_url)
             else:
                 return render(request, 'public/login.html',
@@ -77,7 +82,7 @@ def user_logout(request):
     Log out user if one is logged in and redirect them to frontpage.
     """
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         redirect_page = request.POST.get('current_page', '/')
         logout(request)
         messages.success(request, 'Logged out!')
@@ -94,7 +99,7 @@ def register(request):
     If account has been created user is redirected to login page.
     """
     user_form = UserForm()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         messages.warning(request,
                         'You are already registered and logged in.')
         return render(request, 'public/register.html', {'form': user_form})

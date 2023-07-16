@@ -50,11 +50,13 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # Make sure djangosecure.middleware.SecurityMiddleware is listed first
+    # 'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -64,7 +66,7 @@ MIDDLEWARE_CLASSES = (
 # DEBUG
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool("DJANGO_DEBUG", False)
+DEBUG = env.bool("DJANGO_DEBUG", True)
 
 # FIXTURE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -193,13 +195,13 @@ ROOT_URLCONF = 'django_reddit.urls'
 WSGI_APPLICATION = 'django_reddit.wsgi.application'
 
 # Location of root django.contrib.admin URL,
-ADMIN_URL = r'^admin/'
+ADMIN_URL = 'admin/'
 
 # See: https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
 # AUTH_USER_MODEL = 'users.Person'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login/'
 
 # Your common stuff: Below this line define 3rd party library settings

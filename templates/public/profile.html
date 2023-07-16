@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
     <div class="container">
@@ -82,6 +83,23 @@
                 </div>
             </div>
         </div>
+        <p>
+            <h1> Submission </h1>
+            {% for sub in submissions %}
+                <p><a
+                    href="/user/{{ sub.author_name }}">{{ sub.author_name }}</a></h6>
+            {{ sub.text_html|safe }}</p>
+                <p>{{ sub.timestamp|naturaltime }}</p>
+            {% endfor %}
+        </p>
+
+        <p>
+            <h1> Comments </h1>
+            {% for com in comments %}
+                <p>{{ com.raw_comment }}</p>
+                <p>{{ com.timestamp|naturaltime }}</p>
+            {% endfor %}
+        </p>
     </div>
 
 
